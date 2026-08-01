@@ -23,7 +23,7 @@ namespace OneHourGameJam588
                 _killText.text = $"You killed 1 gobelin\nThat's a good start!";
                 _cg.SetActive(false);
             }
-            else if (GameManager.KillCount < 40)
+            else if (GameManager.KillCount < 30)
             {
                 _killText.text = $"You killed {GameManager.KillCount} gobelins\nTry to survive longer for a reward";
                 _cg.SetActive(false);
