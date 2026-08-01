@@ -15,7 +15,7 @@ namespace OneHourGameJam588
 
         private void Update()
         {
-            if (!_isDead) _rb.linearVelocity = Vector3.zero - transform.position;
+            if (!_isDead) _rb.linearVelocity = (Vector3.zero - transform.position).normalized * GameManager.Instance.Speed;
         }
 
         public void Die(Vector3 touchPoint)

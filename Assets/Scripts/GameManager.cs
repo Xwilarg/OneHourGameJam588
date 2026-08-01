@@ -5,15 +5,19 @@ namespace OneHourGameJam588
 {
     public class GameManager : MonoBehaviour
     {
+        public static GameManager Instance { private set; get; }
+
         [SerializeField]
         private GameObject _enemyPrefab;
 
         private float _spawnRate = 1f;
 
         public int KillCount { set; get; } = 0;
+        public float Speed { set; get; } = 5f;
 
         private void Awake()
         {
+            Instance = this;
             StartCoroutine(SpawnCoroutine());
         }
 
@@ -26,7 +30,14 @@ namespace OneHourGameJam588
             {
                 Instantiate(_enemyPrefab, Random.onUnitCircle * maxPos.x, Quaternion.identity);
 
-                yield return new WaitForSeconds(1f);
+                KillCount++;
+                if (KillCount % 10 == 0 && _spawnRate > .4f)
+                {
+                    _spawnRate -= .2f;
+                    Speed += .5f;
+                }
+
+                yield return new WaitForSeconds(_spawnRate);
             }
         }
     }
