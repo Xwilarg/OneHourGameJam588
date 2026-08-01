@@ -1,4 +1,5 @@
 ﻿using UnityEngine;
+using UnityEngine.SceneManagement;
 
 namespace OneHourGameJam588
 {
@@ -15,7 +16,14 @@ namespace OneHourGameJam588
 
         private void Update()
         {
-            if (!_isDead) _rb.linearVelocity = (Vector3.zero - transform.position).normalized * GameManager.Instance.Speed;
+            if (!_isDead)
+            {
+                _rb.linearVelocity = (Vector3.zero - transform.position).normalized * GameManager.Instance.Speed;
+                if (Vector3.Distance(transform.position, Vector3.zero) < .1f)
+                {
+                    SceneManager.LoadScene("GameOver");
+                }
+            }
         }
 
         public void Die(Vector3 touchPoint)
@@ -25,6 +33,8 @@ namespace OneHourGameJam588
             _rb.linearVelocity = (transform.position - touchPoint).normalized * 20f;
             Destroy(gameObject, 10f);
             _isDead = true;
+
+            GameManager.KillCount++;
         }
     }
 }

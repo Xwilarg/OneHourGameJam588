@@ -10,15 +10,27 @@ namespace OneHourGameJam588
         [SerializeField]
         private GameObject _enemyPrefab;
 
+        [SerializeField]
+        private SpriteRenderer _sr;
+        [SerializeField]
+        private Sprite[] _sprites;
+
         private float _spawnRate = 1f;
 
-        public int KillCount { set; get; } = 0;
+        public int SpawnCount { set; get; } = 0;
+        public static int KillCount = 0;
         public float Speed { set; get; } = 5f;
 
         private void Awake()
         {
+            KillCount = 0;
             Instance = this;
             StartCoroutine(SpawnCoroutine());
+        }
+
+        public void UpdateSprite()
+        {
+            _sr.sprite = _sprites[Mathf.Clamp(Mathf.FloorToInt(KillCount / 10), 0, _sprites.Length - 1)];
         }
 
         public IEnumerator SpawnCoroutine()
@@ -30,12 +42,14 @@ namespace OneHourGameJam588
             {
                 Instantiate(_enemyPrefab, Random.onUnitCircle * maxPos.x, Quaternion.identity);
 
-                KillCount++;
-                if (KillCount % 10 == 0 && _spawnRate > .4f)
+                SpawnCount++;
+                if (SpawnCount % 10 == 0 && _spawnRate > .4f)
                 {
                     _spawnRate -= .2f;
                     Speed += .5f;
                 }
+
+                UpdateSprite();
 
                 yield return new WaitForSeconds(_spawnRate);
             }
